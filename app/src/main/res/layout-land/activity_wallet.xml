@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal"
+    tools:textAlignment="center">
+
+    <LinearLayout
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+
+        <TextView
+        android:id="@+id/wallet_info"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="@string/wallet_info"
+        android:textAlignment="center"
+        android:visibility="visible"
+        tools:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/previous_roll_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/previousRolled"/>
+            <TextView
+                android:id="@id/previous_roll_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/zero"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/sixes_rolled_label"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="@string/sixesRolled" />
+
+            <TextView
+                android:id="@+id/sixes_rolled_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/total_dice_rolls_label"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="@string/totalDiceRolls" />
+            <TextView
+                android:id="@+id/total_dice_rolls_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/zero"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/double_sixes_label"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="@string/doubleSixes" />
+
+            <TextView
+                android:id="@+id/double_sixes_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/double_others_label"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="@string/doubleOthers" />
+            <TextView
+                android:id="@+id/double_others_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/zero"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/coins_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/coins"/>
+        <TextView
+            android:id="@id/coins_balance_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/zero"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/die_face"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:background="@color/purple_500"
+        android:text="@string/zero"
+        android:textColor="@color/white"
+        android:textSize="83sp"
+        android:padding="0dp"
+        android:gravity="center"/>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
