@@ -7,7 +7,6 @@ DICE GAMES:
 ------
 
 
-Here's a revised version of your text with grammatical corrections and some rephrasing for clarity:
 
 ---
 
