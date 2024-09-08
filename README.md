@@ -1,15 +1,18 @@
-DICE GAMES:
+**DICE GAMES:**
+------------------
+
+
 **GROUP MEMBERS** :
-**Rohit Pagar**     -   2021B1A72139G
-**Unmesh Bhole**    -   2021B1A71949G
 
-**APPROACH TO SOLVE THE PROBLEM:**
-------
+_Rohit Pagar_    -   _2021B1A72139G_
+
+_Unmesh Bhole_   -   _2021B1A71949G_
+
+---------------------
+**APPROACH TO SOLVE THE PROBLEM:** 
 
 
-
----
-
+--------------------
 **TESTING:**
 
 A test-driven development approach was followed for building the application. We built the basic logic of our backend code first, then wrote local test cases in our `WalletTest.java` file to test our backend logic. For failing test cases, we continued to improve our code until all test cases passed.
@@ -30,5 +33,4 @@ _Monkey Tests:_
 
 Finally, after being satisfied with our model for local and instrumented tests, we stress-tested our model using the Monkey tool in the platform-tools of the SDK. Our model successfully handled 15,000 random inputs but crashed at 20,000 random inputs.
 
-![Screenshot 2024-09-07 at 11.24.47 AM.png](..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F2m%2F0v64zk055gs7ltnr5hrlc0d00000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_XHfX2c%2FScreenshot%202024-09-07%20at%2011.24.47%E2%80%AFAM.png)
-![Screenshot 2024-09-07 at 11.25.00 AM.png](..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F2m%2F0v64zk055gs7ltnr5hrlc0d00000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_ptf9eJ%2FScreenshot%202024-09-07%20at%2011.25.00%E2%80%AFAM.png)
+-------------------------------------
