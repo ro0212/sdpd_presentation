@@ -4,9 +4,25 @@
   <string name="wallet_info">Click the die to roll.\nYou earn 5 coins every time you roll a  six!\nIf you roll two sixes in a row, you earn 10 coins.\nBut if you roll any other number twice in a row, you lose 5 coins.</string>
   <string name="coins">Coins</string>
   <string name="zero">0</string>
-  <string name="sixesRolled">Sixes Rolled\n</string>
-  <string name="totalDiceRolls">Total Dice Rolls\n</string>
+  <string name="sixesRolled">Sixes Rolled</string>
+  <string name="totalDiceRolls">Total Dice Rolls</string>
   <string name="doubleOthers">Double Others</string>
   <string name="doubleSixes">Double Sixes</string>
   <string name="previousRolled">Previous Roll</string>
+    <string name="game_rules">Game Rules:</string>
+  <string name="Rule1">You earn 5 coins every time you roll a six.</string>
+  <string name="Rule2">If you roll two sixes in a row, you earn 10 coins.</string>
+  <string name="Rule3">But if you roll any other number twice in a row, you lose 5 coins.</string>
+  <string name="click_to_roll">Click the die to roll!</string>
+  <string name="game_rules_description">Game Rules</string>
+  <string name="game_rule1">You earn every time you roll a six.</string>
+  <string name="game_rule2">If you roll 2 sixes in a row, you earn 10 coins.</string>
+  <string name="game_rule3">But if you roll any other number twice in a row, you lose 5 coins.</string>
+  <string name="nothing">""</string>
+  <string name="no_coins">Number of coins</string>
+  <string name="no_sixes">Number of sixes rolled</string>
+  <string name="no_total">Number of total dice rolls</string>
+  <string name="no_dsixes">number of double sixes rolled</string>
+  <string name="no_dothers">number of double others rolled</string>
+  <string name="die_face_description">Die face.</string>
 </resources>

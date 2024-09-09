@@ -4,24 +4,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="#0E0E0E"
     android:orientation="horizontal"
     tools:textAlignment="center">
 
     <LinearLayout
-        android:layout_width="500dp"
+        android:minWidth="500sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
-
+        android:gravity="center"
+        tools:ignore="ExtraText">
 
         <TextView
-        android:id="@+id/wallet_info"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="@string/wallet_info"
-        android:textAlignment="center"
-        android:visibility="visible"
-        tools:visibility="visible" />
+            android:id="@+id/game_rules_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/game_rules"
+            android:textAlignment="center"
+            android:textColor="#EBEBEE"
+            android:textSize="22sp"
+            android:padding="5dp"
+            android:fontFamily="sans-serif-light"
+            android:contentDescription="@string/game_rules_description"/>/>
+
+        <TextView
+            android:id="@+id/Rule1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/game_rule1"
+            android:fontFamily="sans-serif-light"
+            android:padding="4dp"
+            android:text="@string/Rule1"
+            android:textAlignment="center"
+            android:textColor="#EBEBEE"
+            android:textSize="18sp"
+            android:typeface="serif"
+            android:visibility="visible"
+            tools:visibility="visible" />/>
+
+        <TextView
+            android:id="@+id/Rule2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/game_rule2"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/Rule2"
+            android:textAlignment="center"
+            android:textColor="#EBEBEE"
+            android:textSize="18sp"
+            android:typeface="serif"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/Rule3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/game_rule3"
+            android:fontFamily="sans-serif-light"
+            android:padding="4dp"
+            android:text="@string/Rule3"
+            android:textAlignment="center"
+            android:textColor="#EBEBEE"
+            android:textSize="18sp"
+            android:typeface="serif"
+            android:visibility="visible"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -32,13 +81,19 @@
                 android:id="@+id/previous_roll_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/previousRolled"/>
+                android:fontFamily="sans-serif"
+                android:text="@string/previousRolled"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp" />
             <TextView
-                android:id="@id/previous_roll_score"
+                android:id="@+id/previous_roll_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
                 android:padding="16dp"
-                android:text="@string/zero"/>
+                android:text="@string/zero"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -50,27 +105,43 @@
             <TextView
                 android:id="@+id/sixes_rolled_label"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="@string/sixesRolled" />
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/no_sixes"
+                android:fontFamily="sans-serif"
+                android:text="@string/sixesRolled"
+                android:textAlignment="center"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/sixes_rolled_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="@string/zero" />
+                android:fontFamily="sans-serif"
+                android:padding="16sp"
+                android:text="@string/zero"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/total_dice_rolls_label"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="@string/totalDiceRolls" />
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/totalDiceRolls"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp"
+                android:contentDescription="@string/no_total"/>/>
+
             <TextView
                 android:id="@+id/total_dice_rolls_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
                 android:padding="16dp"
-                android:text="@string/zero"/>
+                android:text="@string/zero"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -83,27 +154,42 @@
             <TextView
                 android:id="@+id/double_sixes_label"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="@string/doubleSixes" />
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/doubleSixes"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp"
+                android:contentDescription="@string/no_dsixes"/>/>
 
             <TextView
                 android:id="@+id/double_sixes_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
                 android:padding="16dp"
-                android:text="@string/zero" />
+                android:text="@string/zero"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/double_others_label"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="@string/doubleOthers" />
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/doubleOthers"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp"
+                android:contentDescription="@string/no_dothers"/>/>
+
             <TextView
                 android:id="@+id/double_others_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
                 android:padding="16dp"
-                android:text="@string/zero"/>
+                android:text="@string/zero"
+                android:textColor="#EBEBEE"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -111,7 +197,8 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
+        android:minWidth="300sp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center">
@@ -125,25 +212,47 @@
             android:id="@+id/coins_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/coins"/>
+            android:fontFamily="sans-serif"
+            android:text="@string/coins"
+            android:textColor="#EBEBEE"
+            android:textSize="20sp"
+            android:contentDescription="@string/no_coins"/>
         <TextView
-            android:id="@id/coins_balance_label"
+            android:id="@+id/coins_balance_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
             android:padding="16dp"
-            android:text="@string/zero"/>
+            android:text="@string/zero"
+            android:textColor="#EBEBEE"
+            android:textSize="20sp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/die_face"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:background="@color/purple_500"
-        android:text="@string/zero"
-        android:textColor="@color/white"
-        android:textSize="83sp"
-        android:padding="0dp"
-        android:gravity="center"/>
+        <Button
+            android:id="@+id/die_face"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            android:gravity="center"
+            android:text="@string/zero"
+            android:textColor="#000000"
+            android:textSize="80sp"
+            android:contentDescription="@string/die_face_description"
+            android:padding="16dp"
+            android:minWidth="140dp"
+            android:minHeight="140dp"/>
+
+        <TextView
+            android:id="@+id/click_to_roll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textAlignment="center"
+            android:textColor="#EBEBEE"
+            android:textSize="26sp"
+            android:padding="20dp"
+            android:text="@string/click_to_roll"
+            android:contentDescription="@string/nothing"/>
     </LinearLayout>
 
 
