@@ -2,6 +2,7 @@ package androidsamples.java.dicegames;
 
 //import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,7 +26,7 @@ public class WalletActivity extends AppCompatActivity {
   private TextView doubleSixesView;
   private TextView doubleOthersView;
   private TextView previousView;
-  
+
 //  private static final String KEY_BALANCE = "KEY_BALANCE";
 //  private static final String KEY_DIE_VALUE = "KEY_DIE_VALUE";
 
@@ -58,7 +59,13 @@ public class WalletActivity extends AppCompatActivity {
     button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        WalletVM.rollDie();
+
+        int test_val = WalletVM.get_val();
+        if(test_val!=0){
+          WalletVM.rollDie(test_val);
+        }
+        else { WalletVM.rollDie();}
+
         updateUI();
 
         if(WalletVM.dieValue() == WIN_VALUE){
@@ -71,6 +78,7 @@ public class WalletActivity extends AppCompatActivity {
       }
     });
   }
+  @SuppressLint("SetTextI18n")
   private void updateUI(){
     balanceView.setText(Integer.toString(WalletVM.balance()));
     button.setText(Integer.toString(WalletVM.dieValue()));

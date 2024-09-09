@@ -15,6 +15,7 @@ public class WalletViewModel extends ViewModel {
   private int previous;
   private int doubleOthers;
   private int doubleSixes;
+  private  int test_val;
 
 
   /**
@@ -23,11 +24,18 @@ public class WalletViewModel extends ViewModel {
   public WalletViewModel() {
     // TODO implement method
     die = new Die6();
+    test_val = 0;
     balance = 0;
     sixesRolled = 0;
     totalDieRolls = 0;
     previous = 0;
+    doubleOthers = 0;
+    doubleSixes = 0;
   }
+  public void setTestValue(int value) {
+    test_val = value;
+  }
+
 
   /**
    * Reports the current balance.
@@ -41,7 +49,7 @@ public class WalletViewModel extends ViewModel {
   /**
    * Rolls the {@link Die} in the wallet and implements the changes accordingly.
    */
-  public void rollDie() {
+  public  void rollDie() {
     // TODO implement method
     die.roll();
     Log.d(TAG, "Die rolled: "+ die.value());
@@ -69,13 +77,42 @@ public class WalletViewModel extends ViewModel {
     }
   }
 
+  public void rollDie(int val) {
+    // TODO implement method
+    test_val = val;
+    Log.d(TAG, "Die rolled: "+ val);
+    totalDieRolls++;
+    Log.d(TAG, "Total dice rolled: "+ totalDieRolls);
+    if(val == WIN_VALUE){
+      sixesRolled++;
+      Log.d(TAG, "Sixes rolled: "+ sixesRolled);
+      if(previous == WIN_VALUE){
+        balance = balance + 2*INCREMENT;
+        doubleSixes++;
+      }
+      else {
+        balance += INCREMENT;
+      }
+      previous = WIN_VALUE;
+      Log.d(TAG, "New balance: "+ balance);
+    }
+    else{
+      if(previous == dieValue()){
+        balance = balance - INCREMENT;
+        doubleOthers++;
+      }
+      previous = val;
+    }
+  }
+
   /**
    * Reports the current value of the {@link Die}.
    *
    */
   public int dieValue() {
     // TODO implement method
-    return die.value();
+    return (die.value() != 0) ? die.value() : test_val;
+
   }
 
   /**
@@ -127,5 +164,9 @@ public class WalletViewModel extends ViewModel {
   protected void onCleared() {
     super.onCleared();
     Log.d(TAG, "onCleared");
+  }
+
+  public int get_val(){
+    return test_val;
   }
 }
