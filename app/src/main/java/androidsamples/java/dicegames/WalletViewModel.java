@@ -1,5 +1,6 @@
 package androidsamples.java.dicegames;
 
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
@@ -16,7 +17,8 @@ public class WalletViewModel extends ViewModel {
   private int doubleOthers;
   private int doubleSixes;
   private  int test_val;
-
+  private int in_pointer;
+//  private TextToSpeech textToSpeech;
 
   /**
    * The no argument constructor.
@@ -36,7 +38,6 @@ public class WalletViewModel extends ViewModel {
     test_val = value;
   }
 
-
   /**
    * Reports the current balance.
    *
@@ -55,12 +56,15 @@ public class WalletViewModel extends ViewModel {
     Log.d(TAG, "Die rolled: "+ die.value());
     totalDieRolls++;
     Log.d(TAG, "Total dice rolled: "+ totalDieRolls);
+    in_pointer = 0;
     if(die.value() == WIN_VALUE){
         sixesRolled++;
+        in_pointer = 1;
         Log.d(TAG, "Sixes rolled: "+ sixesRolled);
         if(previous == WIN_VALUE){
           balance = balance + 2*INCREMENT;
           doubleSixes++;
+          in_pointer = 2;
         }
         else {
           balance += INCREMENT;
@@ -71,6 +75,7 @@ public class WalletViewModel extends ViewModel {
     else{
       if(previous == dieValue()){
         balance = balance - INCREMENT;
+        in_pointer = 3;
         doubleOthers++;
       }
       previous = die.value();
@@ -79,6 +84,7 @@ public class WalletViewModel extends ViewModel {
 
   public void rollDie(int val) {
     // TODO implement method
+//    StringBuilder message = new StringBuilder("You rolled a " + val + ".");
     test_val = val;
     Log.d(TAG, "Die rolled: "+ val);
     totalDieRolls++;
@@ -89,16 +95,23 @@ public class WalletViewModel extends ViewModel {
       if(previous == WIN_VALUE){
         balance = balance + 2*INCREMENT;
         doubleSixes++;
+//        message.append("You earned 10 coins.");
       }
       else {
         balance += INCREMENT;
+//        message.append("You earned 5 coins.");
       }
       previous = WIN_VALUE;
       Log.d(TAG, "New balance: "+ balance);
+
+      // Speak the result
+//      message.append("Your balance is "+ balance +"coins.");
+//      textToSpeech.speak(message.toString(), TextToSpeech.QUEUE_FLUSH, null, null);
     }
     else{
       if(previous == dieValue()){
         balance = balance - INCREMENT;
+//        message.append("You lost 5 coins.");
         doubleOthers++;
       }
       previous = val;
@@ -168,5 +181,13 @@ public class WalletViewModel extends ViewModel {
 
   public int get_val(){
     return test_val;
+  }
+
+  public int increment(){
+    if(in_pointer == 0) return 0;
+    else if(in_pointer == 1) return 5;
+    else if(in_pointer == 2) return 10;
+    else if(in_pointer == 3) return -5;
+    else return 1;
   }
 }
