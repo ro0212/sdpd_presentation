@@ -1,30 +1,29 @@
-package androidsamples.java.dicegames;
 
-//import static android.content.ContentValues.TAG;
+package androidsamples.java.dicegames;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.RecognitionListener;
+import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class WalletActivity extends AppCompatActivity {
 
   private TextView balanceView;
-  private Button button;
+  //private Button button;
   private static final String TAG = "WalletActivity";
   private static final int WIN_VALUE = 6;
   private TextView sixesRolledView;
@@ -33,14 +32,15 @@ public class WalletActivity extends AppCompatActivity {
   private TextView doubleOthersView;
   private TextView previousView;
 
-//  private static final String KEY_BALANCE = "KEY_BALANCE";
-//  private static final String KEY_DIE_VALUE = "KEY_DIE_VALUE";
   private TextToSpeech textToSpeech;
-  private Button startTalkingButton;
   private static final int REQUEST_CODE_SPEECH_INPUT = 100;
 
-
-  private WalletViewModel WalletVM;
+  private WalletViewModel walletVM;  // Follow camelCase naming conventions
+  ImageView dieFaceImageView;
+  // Variables for speech recognition
+  private SpeechRecognizer speechRecognizer;
+  private Intent recognizerIntent;
+  private boolean isVoiceCommandActive = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -48,194 +48,280 @@ public class WalletActivity extends AppCompatActivity {
     Log.d(TAG, "onCreate");
     setContentView(R.layout.activity_wallet);
 
+    // UI Elements
     balanceView = findViewById(R.id.coins_balance_label);
-    button = findViewById(R.id.die_face);
+    //button = findViewById(R.id.die_face);
+    dieFaceImageView = findViewById(R.id.die_face_image);
     sixesRolledView = findViewById(R.id.sixes_rolled_score);
     totalDiceRolledView = findViewById(R.id.total_dice_rolls_score);
     doubleOthersView = findViewById(R.id.double_others_score);
     doubleSixesView = findViewById(R.id.double_sixes_score);
     previousView = findViewById(R.id.previous_roll_score);
 
-    startTalkingButton = findViewById(R.id.start_talking_button);
-//    if(savedInstanceState != null){
-//        balance = savedInstanceState.getInt(KEY_BALANCE,0);
-//        int dieValue = savedInstanceState.getInt(KEY_DIE_VALUE,0);
-//        balanceView.setText(Integer.toString(balance));
-//        button.setText(Integer.toString(dieValue));
-//        Log.d(TAG, "Restored balance = "+balance +" die = "+ dieValue);
-//    }
-    textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-      @Override
-      public void onInit(int status) {
-        if (status != TextToSpeech.ERROR) {
-          textToSpeech.setLanguage(Locale.US);
-        }
+    // Initialize TextToSpeech
+    textToSpeech = new TextToSpeech(this, status -> {
+      if (status == TextToSpeech.SUCCESS) {
+        textToSpeech.setLanguage(Locale.US);
       }
     });
 
-    startTalkingButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startVoiceRecognition();
-      }
-    });
-
-    WalletVM = new ViewModelProvider(this).get(WalletViewModel.class);
+    // Initialize ViewModel
+    walletVM = new ViewModelProvider(this).get(WalletViewModel.class);
     updateUI();
 
-    button.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        int test_val = WalletVM.get_val();
-        if(test_val!=0){
-          WalletVM.rollDie(test_val);
-        }
-        else { WalletVM.rollDie();}
+    // Set button click to roll the die
+    dieFaceImageView.setOnClickListener(view -> {
+      int test_val = walletVM.get_val();
+      if (test_val != 0) {
+        walletVM.rollDie(test_val);
+      } else {
+        walletVM.rollDie();
+      }
+      updateUI();
 
-        updateUI();
-
-        if(WalletVM.dieValue() == WIN_VALUE){
-          CharSequence text = "Congratulations!";
-          int duration = Toast.LENGTH_SHORT;
-
-          Toast.makeText(WalletActivity.this, "Congratulations.", Toast.LENGTH_SHORT).show();
-        }
+      if (walletVM.dieValue() == WIN_VALUE) {
+        Toast.makeText(WalletActivity.this, "Congratulations!", Toast.LENGTH_SHORT).show();
       }
     });
-  }
-  @SuppressLint("SetTextI18n")
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO}, REQUEST_CODE_SPEECH_INPUT);
+      }
+    }
 
-  private void updateUI(){
-    balanceView.setText(Integer.toString(WalletVM.balance()));
-    button.setText(Integer.toString(WalletVM.dieValue()));
-    sixesRolledView.setText(Integer.toString(WalletVM.singleSixes()));
-    totalDiceRolledView.setText(Integer.toString(WalletVM.totalRolls()));
-    previousView.setText(Integer.toString(WalletVM.previousRoll()));
-    doubleSixesView.setText(Integer.toString(WalletVM.doubleSixes()));
-    doubleOthersView.setText(Integer.toString(WalletVM.doubleOthers()));
-  }
 
-  private void startVoiceRecognition() {
-    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-    intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say 'roll the die' or 'my coins'");
-    startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+
+    // Initialize SpeechRecognizer
+    speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+    setupSpeechRecognizer();
+
+    // Setup recognizer intent
+    recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+    recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+    recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.US);
+
+    // Start listening when the app starts
+    startListening();
   }
 
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == REQUEST_CODE_SPEECH_INPUT && resultCode == RESULT_OK && data != null) {
-      ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-      String recognizedText = results.get(0).toLowerCase();
-//      if (results != null && results.contains("roll the die")) {
-//        // Simulate dice roll
-//        WalletVM.rollDie();
-//        updateUI();
-//        speakUpdatedValues();  // Speak the updated values after roll
-//      }
-      if (recognizedText.contains("roll") && recognizedText.contains("die")) {
-        WalletVM.rollDie();
-        updateUI();
-        speakUpdatedValues();
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    if (requestCode == REQUEST_CODE_SPEECH_INPUT) {
+      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        startListening();  // Permission granted
+      } else {
+        Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
       }
-      else if(recognizedText.contains("number") && recognizedText.contains("coins")){
-        speakCoins();
-      }
-      else if(recognizedText.contains("sixes")){
-        speakSixes();
-      }
-      else if(recognizedText.contains("total") && recognizedText.contains("rolls")){
-        speakTotal();
-      }
-      else {
-        // Handle cases where the input is not recognized as a dice roll command
-        Toast.makeText(this, "Command not recognized. Please say 'roll the die'.", Toast.LENGTH_SHORT).show();
-      }
-
-
     }
   }
 
+  @SuppressLint("SetTextI18n")
+  private void updateUI() {
+    balanceView.setText(Integer.toString(walletVM.balance()));
+    sixesRolledView.setText(Integer.toString(walletVM.singleSixes()));
+    totalDiceRolledView.setText(Integer.toString(walletVM.totalRolls()));
+    previousView.setText(Integer.toString(walletVM.previousRoll()));
+    doubleSixesView.setText(Integer.toString(walletVM.doubleSixes()));
+    doubleOthersView.setText(Integer.toString(walletVM.doubleOthers()));
+    switch (walletVM.dieValue()) {
+      case 1:
+        dieFaceImageView.setImageResource(R.drawable.dice1);
+        break;
+      case 2:
+        dieFaceImageView.setImageResource(R.drawable.dice2);
+        break;
+      case 3:
+        dieFaceImageView.setImageResource(R.drawable.dice3);
+        break;
+      case 4:
+        dieFaceImageView.setImageResource(R.drawable.dice4);
+        break;
+      case 5:
+        dieFaceImageView.setImageResource(R.drawable.dice5);
+        break;
+      case 6:
+        dieFaceImageView.setImageResource(R.drawable.dice6);
+        break;
+    }
+
+  }
+
+  // Start listening for voice commands
+  private void startListening() {
+    if (speechRecognizer != null) {
+      speechRecognizer.startListening(recognizerIntent);
+    }
+  }
+
+  // Setup SpeechRecognizer
+  private void setupSpeechRecognizer() {
+    speechRecognizer.setRecognitionListener(new RecognitionListener() {
+      @Override
+      public void onReadyForSpeech(Bundle params) { }
+
+      @Override
+      public void onBeginningOfSpeech() { }
+
+      @Override
+      public void onRmsChanged(float rmsdB) { }
+
+      @Override
+      public void onBufferReceived(byte[] buffer) { }
+
+      @Override
+      public void onEndOfSpeech() { }
+
+      @Override
+      public void onError(int error) {
+        startListening();
+      }
+
+      @Override
+      public void onResults(Bundle results) {
+        ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        if (matches != null && !matches.isEmpty()) {
+          String command = matches.get(0).toLowerCase();
+          Log.d(TAG, "Recognized command: " + command);  // Log the command
+
+          if ((command.contains("dice games") || command.contains("dice") ||
+                  command.contains("games"))&& !isVoiceCommandActive) {
+            voice_commands_activated();
+            isVoiceCommandActive = true;
+            Toast.makeText(WalletActivity.this, "Voice commands activated", Toast.LENGTH_SHORT).show();
+          } else if (command.contains("close") && isVoiceCommandActive) {
+            voice_commands_deactivated();
+            isVoiceCommandActive = false;
+            Toast.makeText(WalletActivity.this, "Voice commands deactivated", Toast.LENGTH_SHORT).show();
+          } else if (isVoiceCommandActive) {
+            processVoiceCommand(command);
+          }
+        }
+        startListening();
+      }
+
+
+      @Override
+      public void onPartialResults(Bundle partialResults) { }
+
+      @Override
+      public void onEvent(int eventType, Bundle params) { }
+    });
+  }
+
+  // Handle recognized voice commands
+  private void handleVoiceCommand(String command) {
+    if (command.contains("hello")) {
+      Toast.makeText(WalletActivity.this, "Hello recognized", Toast.LENGTH_SHORT).show();
+    }
+
+    if (command.contains("dice") && command.contains("games") && !isVoiceCommandActive) {
+      isVoiceCommandActive = true;
+      Toast.makeText(WalletActivity.this, "Voice command activated", Toast.LENGTH_SHORT).show();
+    }
+    else if (command.contains("close dice games") && isVoiceCommandActive) {
+      isVoiceCommandActive = false;
+      Toast.makeText(WalletActivity.this, "Voice command deactivated", Toast.LENGTH_SHORT).show();
+    } else if (isVoiceCommandActive) {
+      processVoiceCommand(command);
+    }
+  }
+
+  // Process voice commands
+  private void processVoiceCommand(String command) {
+    if (command.contains("roll") && command.contains("die") || command.contains("roll ")) {
+      walletVM.rollDie();
+      updateUI();
+      speakUpdatedValues();
+    } else if (command.contains("number") && command.contains("coins")) {
+      speakCoins();
+    } else if (command.contains("sixes")) {
+      speakSixes();
+    } else if (command.contains("total") && command.contains("rolls")) {
+      speakTotal();
+    } else if (command.contains("rules") || command.contains("game rules")) {
+      speakRules();
+    } else {
+      Toast.makeText(this, "Command not recognized. Please try again.", Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  // Voice feedback methods...
+  // (No changes needed in the speak methods)
+  // Voice feedback methods
+  private  void voice_commands_activated(){
+    String message = "Voice Command Activated";
+    textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
+  }
+  private  void voice_commands_deactivated(){
+    String message = "Voice Command deactivated";
+    textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
+  }
+  private void speakRules() {
+    String message = "When you roll the die, if you get a six, you earn five coins. " +
+            "If you roll consecutive sixes, you earn ten coins. " +
+            "Rolling any other number consecutively loses you five coins.";
+    textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
+  }
+
   private void speakTotal() {
-    String message = "You rolled  " + WalletVM.totalRolls() + " times. ";
-    // Speak the message
+    String message = "You have rolled the die " + walletVM.totalRolls() + " times.";
     textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
   }
 
   private void speakSixes() {
-    String message = "You got " + WalletVM.singleSixes() + " single sixes. ";
-
-    message += "You got " + WalletVM.doubleSixes() + " double sixes. ";
-    // Speak the message
+    String message = "You have rolled " + walletVM.singleSixes() + " single sixes and " +
+            walletVM.doubleSixes() + " double sixes.";
     textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
   }
 
   private void speakCoins() {
-    String message = "You have " + WalletVM.balance() + " coins. ";
-    // Speak the message
+    String message = "You have " + walletVM.balance() + " coins.";
     textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
   }
 
   private void speakUpdatedValues() {
-    String message = "You rolled a " + WalletVM.dieValue() + ". ";
-    if(WalletVM.increment() == 0){
-      message += "You didn't get any coins. ";
+    String message = "You rolled a " + walletVM.dieValue() + ". ";
+    int increment = walletVM.increment();
+    if (increment == 0) {
+      message += "You didn't get any coins.";
+    } else if (increment == 5) {
+      message += "You got 5 coins.";
+    } else if (increment == 10) {
+      message += "You got 10 coins.";
+    } else if (increment == -5) {
+      message += "You lost 5 coins.";
     }
-    else if(WalletVM.increment() == 5){
-      message += "You got 5 coins. ";
-    }
-    else if(WalletVM.increment() == 10){
-      message += "You got 10 coins. ";
-    }
-    else if(WalletVM.increment() == -5){
-      message += "You lost 5 coins. ";
-    }
-    // Speak the message
     textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
   }
 
   @Override
+  protected void onPause() {
+    if (speechRecognizer != null) {
+      speechRecognizer.stopListening();
+    }
+    super.onPause();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    startListening();
+  }
+
+
+  @Override
   protected void onDestroy() {
+    if (speechRecognizer != null) {
+      speechRecognizer.destroy();
+    }
     if (textToSpeech != null) {
       textToSpeech.stop();
       textToSpeech.shutdown();
     }
     super.onDestroy();
-    Log.d(TAG,"onDestroy");
   }
-
-  @Override
-  protected void onStart(){
-    super.onStart();
-    Log.d(TAG,"onStart");
-  }
-  @Override
-  protected void onResume(){
-    super.onResume();
-    Log.d(TAG,"onResume");
-  }
-  @Override
-  protected void onStop(){
-    super.onStop();
-    Log.d(TAG,"onStop");
-  }
-//  @Override
-//  protected void onDestroy(){
-//    super.onDestroy();
-//
-//  }
-  @Override
-  protected void onPause(){
-    super.onPause();
-    Log.d(TAG,"onPause");
-  }
-//  @Override
-//  protected void onSaveInstanceState(@NonNull Bundle outState) {
-//    super.onSaveInstanceState(outState);
-//    Log.d(TAG, "onSaveInstanceState");
-//    outState.putInt(KEY_BALANCE, balance);
-//    outState.putInt(KEY_DIE_VALUE, die.value());
-//    Log.d(TAG, "Saved: balance = "+balance + ", die = "+ die.value());
-//  }
 }
+
+
+

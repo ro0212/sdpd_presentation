@@ -6,8 +6,8 @@
     android:background="#0E0E0E"
     android:gravity="center"
     android:orientation="vertical"
-    tools:textAlignment="center"
-    tools:ignore="ExtraText">
+    tools:textAlignment="center">
+
   <TextView
       android:id="@+id/game_rules_label"
       android:layout_width="match_parent"
@@ -18,7 +18,7 @@
       android:textSize="22sp"
       android:padding="5dp"
       android:fontFamily="sans-serif-light"
-      android:contentDescription="@string/game_rules_description"/>/>
+      android:contentDescription="@string/game_rules_description" />
 
   <TextView
       android:id="@+id/Rule1"
@@ -32,8 +32,7 @@
       android:textColor="#EBEBEE"
       android:textSize="18sp"
       android:typeface="serif"
-      android:visibility="visible"
-      tools:visibility="visible" />/>
+      android:visibility="visible" />
 
   <TextView
       android:id="@+id/Rule2"
@@ -46,8 +45,7 @@
       android:textColor="#EBEBEE"
       android:textSize="18sp"
       android:typeface="serif"
-      android:visibility="visible"
-      tools:visibility="visible" />
+      android:visibility="visible" />
 
   <TextView
       android:id="@+id/Rule3"
@@ -61,8 +59,8 @@
       android:textColor="#EBEBEE"
       android:textSize="18sp"
       android:typeface="serif"
-      android:visibility="visible"
-      tools:visibility="visible" />
+      android:visibility="visible" />
+
   <TextView
       android:id="@+id/click_to_roll"
       android:layout_width="match_parent"
@@ -73,7 +71,7 @@
       android:textSize="26sp"
       android:padding="20dp"
       android:text="@string/click_to_roll"
-      android:contentDescription="@string/nothing"/>
+      android:contentDescription="@string/nothing" />
 
   <LinearLayout
       android:layout_width="wrap_content"
@@ -89,7 +87,7 @@
         android:text="@string/coins"
         android:textColor="#EBEBEE"
         android:textSize="20sp"
-        android:contentDescription="@string/no_coins"/>
+        android:contentDescription="@string/no_coins" />
 
     <TextView
         android:id="@+id/coins_balance_label"
@@ -102,20 +100,13 @@
         android:textSize="20sp" />
   </LinearLayout>
 
-  <Button
-      android:id="@+id/die_face"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:backgroundTint="#FFFFFF"
-      android:gravity="center"
-      android:text="@string/zero"
-      android:textColor="#000000"
-      android:textSize="80sp"
+  <ImageView
+      android:id="@+id/die_face_image"
+      android:layout_width="140dp"
+      android:layout_height="140dp"
       android:contentDescription="@string/die_face_description"
       android:padding="16dp"
-      android:minWidth="140dp"
-      android:minHeight="140dp"/>
-
+      android:src="@drawable/dice1" />
 
   <LinearLayout
       android:layout_width="wrap_content"
@@ -130,7 +121,7 @@
         android:fontFamily="sans-serif"
         android:text="@string/previousRolled"
         android:textColor="#EBEBEE"
-        android:textSize="20sp" />/>
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/previous_roll_score"
@@ -154,6 +145,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
+
       <TextView
           android:id="@+id/sixes_rolled_label"
           android:layout_width="wrap_content"
@@ -190,7 +182,7 @@
           android:text="@string/totalDiceRolls"
           android:textColor="#EBEBEE"
           android:textSize="20sp"
-          android:contentDescription="@string/no_total"/>/>
+          android:contentDescription="@string/no_total" />
 
       <TextView
           android:id="@+id/total_dice_rolls_score"
@@ -224,7 +216,7 @@
           android:text="@string/doubleSixes"
           android:textColor="#EBEBEE"
           android:textSize="20sp"
-          android:contentDescription="@string/no_dsixes"/>/>
+          android:contentDescription="@string/no_dsixes" />
 
       <TextView
           android:id="@+id/double_sixes_score"
@@ -244,16 +236,6 @@
         android:orientation="horizontal">
 
       <TextView
-          android:id="@+id/double_others_label"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:fontFamily="sans-serif"
-          android:text="@string/doubleOthers"
-          android:textColor="#EBEBEE"
-          android:textSize="20sp"
-          android:contentDescription="@string/no_dothers"/>/>
-
-      <TextView
           android:id="@+id/double_others_score"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -267,9 +249,4 @@
 
   </LinearLayout>
 
-  <Button
-      android:id="@+id/start_talking_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Start Talking" />
 </LinearLayout>
