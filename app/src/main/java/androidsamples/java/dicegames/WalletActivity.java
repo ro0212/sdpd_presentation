@@ -115,7 +115,7 @@ public class WalletActivity extends AppCompatActivity {
       }
     }
   }
-
+// Hello world
   @SuppressLint("SetTextI18n")
   private void updateUI() {
     balanceView.setText(Integer.toString(walletVM.balance()));
