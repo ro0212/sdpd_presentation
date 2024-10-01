@@ -114,6 +114,7 @@ public class WalletActivity extends AppCompatActivity {
         Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
       }
     }
+    // naaijaisjoas
   }
 // Hello world
   @SuppressLint("SetTextI18n")
